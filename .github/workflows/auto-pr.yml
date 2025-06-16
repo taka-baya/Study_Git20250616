@@ -21,8 +21,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      ーああああああ、
-
       - name: Extract branch info
         id: branch_info
         run: |
