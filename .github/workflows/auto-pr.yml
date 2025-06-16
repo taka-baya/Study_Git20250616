@@ -6,6 +6,7 @@ on:
       - 'feature/**'
       - 'bugfix/**'
       - 'hotfix/**'
+      - 'fix/**'
       # 必要に応じてブランチパターンを追加・変更してください
 
 jobs:
@@ -51,7 +52,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create Pull Request
+      - ,name: Create Pull Request
         if: steps.check_pr.outputs.pr_exists == '0'
         run: |
           # プルリクエストの本文を生成
