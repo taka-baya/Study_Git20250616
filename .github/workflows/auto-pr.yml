@@ -24,7 +24,7 @@ jobs:
         id: branch_info
         run: |
           # ブランチ名を取得
-          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
           echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
           
           # ブランチ名からタイトルを生成（例：feature/user-auth → User Auth）
