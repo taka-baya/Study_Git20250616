@@ -1,0 +1,92 @@
+name: Auto Create Pull Request
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+      - 'bugfix/**'
+      - 'hotfix/**'
+      # 必要に応じてブランチパターンを追加・変更してください
+
+jobs:
+  auto-create-pr:
+    runs-on: ubuntu-latest
+    # mainブランチへのpushは除外
+    if: github.ref != 'refs/heads/main' && github.ref != 'refs/heads/master'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract branch info
+        id: branch_info
+        run: |
+          # ブランチ名を取得
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          
+          # ブランチ名からタイトルを生成（例：feature/user-auth → User Auth）
+          TITLE=$(echo "$BRANCH_NAME" | sed 's|.*/||' | sed 's|-| |g' | sed 's/\b\w/\U&/g')
+          echo "pr_title=$TITLE" >> $GITHUB_OUTPUT
+          
+          # プレフィックスに基づいてラベルを設定
+          if [[ $BRANCH_NAME == feature/* ]]; then
+            echo "labels=enhancement" >> $GITHUB_OUTPUT
+          elif [[ $BRANCH_NAME == bugfix/* ]]; then
+            echo "labels=bug" >> $GITHUB_OUTPUT
+          elif [[ $BRANCH_NAME == hotfix/* ]]; then
+            echo "labels=hotfix,priority:high" >> $GITHUB_OUTPUT
+          else
+            echo "labels=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check if PR already exists
+        id: check_pr
+        run: |
+          # 既存のPRがあるかチェック
+          PR_EXISTS=$(gh pr list --head "${{ steps.branch_info.outputs.branch_name }}" --json number --jq length)
+          echo "pr_exists=$PR_EXISTS" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Pull Request
+        if: steps.check_pr.outputs.pr_exists == '0'
+        run: |
+          # プルリクエストの本文を生成
+          BODY="## 概要
+          このプルリクエストは \`${{ steps.branch_info.outputs.branch_name }}\` ブランチから自動作成されました。
+          
+          ## 変更内容
+          - [ ] 変更内容を記載してください
+          - [ ] テストを追加してください
+          - [ ] ドキュメントを更新してください
+          
+          ## チェックリスト
+          - [ ] コードレビューの準備ができています
+          - [ ] テストが通過しています
+          - [ ] 関連するissueがある場合は番号を記載してください (#issue番号)
+          
+          ---
+          *このPRは GitHub Actions により自動作成されました*"
+          
+          # PRを作成
+          gh pr create \
+            --title "${{ steps.branch_info.outputs.pr_title }}" \
+            --body "$BODY" \
+            --base main \
+            --head "${{ steps.branch_info.outputs.branch_name }}" \
+            --label "${{ steps.branch_info.outputs.labels }}" \
+            --draft
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add comment to existing PR
+        if: steps.check_pr.outputs.pr_exists != '0'
+        run: |
+          echo "プルリクエストは既に存在します: ${{ steps.branch_info.outputs.branch_name }}"
+          # 必要に応じて既存PRにコメントを追加
+          # gh pr comment --body "新しいコミットがプッシュされました" $(gh pr list --head "${{ steps.branch_info.outputs.branch_name }}" --json number --jq '.[0].number')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
