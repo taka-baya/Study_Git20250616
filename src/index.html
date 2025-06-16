@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Program!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 60px 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .welcome-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            text-align: left;
+            font-size: 0.9rem;
+            border-left: 4px solid #00ff00;
+        }
+
+        .floating-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) {
+            width: 10px;
+            height: 10px;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .particle:nth-child(2) {
+            width: 15px;
+            height: 15px;
+            left: 20%;
+            animation-delay: 2s;
+        }
+
+        .particle:nth-child(3) {
+            width: 8px;
+            height: 8px;
+            left: 30%;
+            animation-delay: 4s;
+        }
+
+        .particle:nth-child(4) {
+            width: 12px;
+            height: 12px;
+            left: 40%;
+            animation-delay: 1s;
+        }
+
+        .particle:nth-child(5) {
+            width: 6px;
+            height: 6px;
+            left: 50%;
+            animation-delay: 3s;
+        }
+
+        .particle:nth-child(6) {
+            width: 14px;
+            height: 14px;
+            left: 60%;
+            animation-delay: 5s;
+        }
+
+        .particle:nth-child(7) {
+            width: 9px;
+            height: 9px;
+            left: 70%;
+            animation-delay: 2.5s;
+        }
+
+        .particle:nth-child(8) {
+            width: 11px;
+            height: 11px;
+            left: 80%;
+            animation-delay: 4.5s;
+        }
+
+        .particle:nth-child(9) {
+            width: 7px;
+            height: 7px;
+            left: 90%;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            }
+            to {
+                text-shadow: 0 2px 20px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.3);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10%, 90% {
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-10vh) rotate(180deg);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+                margin: 20px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .welcome-icon {
+                font-size: 3rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="container">
+        <div class="welcome-icon">🚀</div>
+        <h1>Welcome to Program!</h1>
+        <p class="subtitle">プログラミングの世界へようこそ</p>
+        
+        <div class="code-block">
+            console.log("Hello, World!");<br>
+            // Let's start coding together!<br>
+            function welcome() {<br>
+            &nbsp;&nbsp;return "Ready to create amazing things!";<br>
+            }
+        </div>
+    </div>
+
+    <script>
+        // 簡単なインタラクション
+        document.addEventListener('click', function() {
+            const container = document.querySelector('.container');
+            container.style.transform = 'scale(1.05)';
+            setTimeout(() => {
+                container.style.transform = 'scale(1)';
+            }, 200);
+        });
+
+        // ページロード時のアニメーション
+        window.addEventListener('load', function() {
+            const title = document.querySelector('h1');
+            setTimeout(() => {
+                title.style.color = '#FFD700';
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
